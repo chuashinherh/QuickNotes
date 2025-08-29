@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "289160222253",
+    "project_id": "quicknotes-flutter-myproject",
+    "storage_bucket": "quicknotes-flutter-myproject.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:289160222253:android:c8865901490242376b4aa4",
+        "android_client_info": {
+          "package_name": "com.example.quicknotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoPuv_Dc7l_xIoPNf2geE1bmcbzJi1wm4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
