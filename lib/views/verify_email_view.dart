@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quicknotes/constants/routes.dart';
 
 class VerifyEmailView extends StatefulWidget {
@@ -35,10 +36,15 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
             onPressed: () async {
               await FirebaseAuth.instance.currentUser?.reload();
               final user = FirebaseAuth.instance.currentUser;
-              if (user != null && user.emailVerified) {
+              if (user?.emailVerified ?? false) {
                 Navigator.of(
                   context,
                 ).pushNamedAndRemoveUntil(notesRoute, (route) => false);
+              } else {
+                Fluttertoast.showToast(
+                  msg: "Email is not verified yet",
+                  toastLength: Toast.LENGTH_SHORT,
+                );
               }
             },
             child: Text("I have verified my email"),
