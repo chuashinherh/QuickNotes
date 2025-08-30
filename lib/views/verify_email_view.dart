@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:quicknotes/constants/routes.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({super.key});
@@ -29,7 +30,7 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               await FirebaseAuth.instance.currentUser?.reload();
               final user = FirebaseAuth.instance.currentUser;
               if (user != null && user.emailVerified) {
-                navigator.pushNamedAndRemoveUntil("/notes/", (route) => false);
+                navigator.pushNamedAndRemoveUntil(notesRoute, (route) => false);
               }
             },
             child: Text("I have verified my email"),
