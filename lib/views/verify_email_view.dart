@@ -1,7 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:quicknotes/constants/routes.dart';
+import 'package:quicknotes/services/auth/auth_service.dart';
 
 class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({super.key});
@@ -13,7 +12,8 @@ class VerifyEmailView extends StatefulWidget {
 class _VerifyEmailViewState extends State<VerifyEmailView> {
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
+    final service = AuthService.firebase();
+    final user = service.currentUser;
 
     return Scaffold(
       appBar: AppBar(title: const Text("Verify Email")),
@@ -27,31 +27,13 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
           ),
           TextButton(
             onPressed: () async {
-              final user = FirebaseAuth.instance.currentUser;
-              await user?.sendEmailVerification();
+              await service.sendEmailVerification();
             },
             child: const Text("Send email verification"),
           ),
           TextButton(
             onPressed: () async {
-              await FirebaseAuth.instance.currentUser?.reload();
-              final user = FirebaseAuth.instance.currentUser;
-              if (user?.emailVerified ?? false) {
-                Navigator.of(
-                  context,
-                ).pushNamedAndRemoveUntil(notesRoute, (route) => false);
-              } else {
-                Fluttertoast.showToast(
-                  msg: "Email is not verified yet",
-                  toastLength: Toast.LENGTH_SHORT,
-                );
-              }
-            },
-            child: Text("I have verified my email"),
-          ),
-          TextButton(
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
+              await service.logOut();
               Navigator.of(
                 context,
               ).pushNamedAndRemoveUntil(registerRoute, (route) => false);

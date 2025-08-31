@@ -1,6 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quicknotes/constants/routes.dart';
+import 'package:quicknotes/services/auth/auth_exceptions.dart';
+import 'package:quicknotes/services/auth/auth_service.dart';
 import 'package:quicknotes/utilities/show_error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -57,14 +59,12 @@ class _LoginViewState extends State<LoginView> {
             onPressed: () async {
               final email = _email.text;
               final password = _password.text;
+              AuthService service = AuthService.firebase();
 
               try {
-                await FirebaseAuth.instance.signInWithEmailAndPassword(
-                  email: email,
-                  password: password,
-                );
-                final user = FirebaseAuth.instance.currentUser;
-                if (user?.emailVerified ?? false) {
+                await service.logIn(email: email, password: password);
+                final user = service.currentUser;
+                if (user?.isEmailVerified ?? false) {
                   Navigator.of(
                     context,
                   ).pushNamedAndRemoveUntil(notesRoute, (route) => false);
@@ -73,19 +73,15 @@ class _LoginViewState extends State<LoginView> {
                     context,
                   ).pushNamedAndRemoveUntil(verifyEmailRoute, (route) => false);
                 }
-              } on FirebaseAuthException catch (e) {
-                if (e.code == "invalid-credential") {
-                  await showErrorDialog(context, "Invalid credentials");
-                } else if (e.code == "channel-error") {
-                  await showErrorDialog(
-                    context,
-                    "Please enter your email and password",
-                  );
-                } else {
-                  await showErrorDialog(context, "Error: ${e.code}");
-                }
-              } catch (e) {
-                await showErrorDialog(context, "Error: ${e.toString()}");
+              } on InvalidCredentialAuthException {
+                await showErrorDialog(context, "Invalid credentials");
+              } on ChannelErrorAuthException {
+                await showErrorDialog(
+                  context,
+                  "Please enter your email and password",
+                );
+              } on GenericAuthException {
+                await showErrorDialog(context, "Authentication error");
               }
             },
             child: const Text("Login"),
