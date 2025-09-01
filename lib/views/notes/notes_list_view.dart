@@ -12,7 +12,7 @@ class NotesListView extends StatelessWidget {
   const NotesListView({
     super.key,
     required this.notes,
-    required this.onDeleteNote, 
+    required this.onDeleteNote,
     required this.onTap,
   });
 

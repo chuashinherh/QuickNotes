@@ -36,9 +36,9 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
               await service.logOut();
               Navigator.of(
                 context,
-              ).pushNamedAndRemoveUntil(registerRoute, (route) => false);
+              ).pushNamedAndRemoveUntil(loginRoute, (route) => false);
             },
-            child: Text("Return to account registration"),
+            child: Text("Return to login"),
           ),
         ],
       ),
